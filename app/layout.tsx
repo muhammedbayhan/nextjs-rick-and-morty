@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "@ant-design/v5-patch-for-react-19";
 import Header from "@/components/header";
+import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
   title: "Rick and Morty Universe",
@@ -18,6 +19,7 @@ export default function RootLayout({
       <body>
         <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );
