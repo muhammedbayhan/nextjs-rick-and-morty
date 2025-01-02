@@ -4,15 +4,14 @@ import PaginationComp from "@/components/characters/pagination-comp";
 import SearchComp from "@/components/characters/search-comp";
 
 const CharactersPage = async ({ searchParams }) => {
-  const { page } = await searchParams;
-  const { name } = await searchParams;
+  const { page, name } = searchParams;
 
   const currentPage = page ? parseInt(page) : 1;
 
   let data = [];
   let info = {};
   try {
-    const response = await v1.getAllCharacters(currentPage);
+    const response = await v1.getAllCharacters(currentPage, name || "");
     if (response.status === 200) {
       const json = await response.json();
       data = json.results;
