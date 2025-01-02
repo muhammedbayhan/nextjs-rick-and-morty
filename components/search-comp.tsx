@@ -2,16 +2,16 @@
 import Search from "antd/es/input/Search";
 import { useRouter } from "next/navigation";
 
-const SearchComp = () => {
+const SearchComp = ({ routePath }) => {
   const router = useRouter();
 
   const onChange = (e) => {
     const newInput = e.target.value;
 
     if (newInput === "") {
-      router.push("/characters");
+      router.push(`${routePath}`);
     } else {
-      router.push(`/characters?name=${newInput}`);
+      router.push(`${routePath}?name=${newInput}`);
     }
   };
 

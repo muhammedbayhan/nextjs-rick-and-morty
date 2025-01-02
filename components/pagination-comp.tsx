@@ -3,11 +3,11 @@ import { Pagination } from "antd";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-const PaginationComp = ({ currentPage, info }) => {
+const PaginationComp = ({ currentPage, info, routePath }) => {
   const router = useRouter();
 
   const handlePaginationChange = (page) => {
-    router.push(`/characters?page=${page}`);
+    router.push(`${routePath}${page}`);
   };
 
   return (

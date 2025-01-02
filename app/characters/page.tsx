@@ -1,7 +1,7 @@
 import UserCard from "@/components/characters/user-card";
 import v1 from "../api/v1";
-import PaginationComp from "@/components/characters/pagination-comp";
-import SearchComp from "@/components/characters/search-comp";
+import PaginationComp from "@/components/pagination-comp";
+import SearchComp from "@/components/search-comp";
 
 const CharactersPage = async ({ searchParams }) => {
   const { page, name } = searchParams;
@@ -26,8 +26,12 @@ const CharactersPage = async ({ searchParams }) => {
   return (
     <div>
       <div className="my-10 flex flex-col items-center justify-center">
-        <SearchComp />
-        <PaginationComp currentPage={currentPage} info={info} />
+        <SearchComp routePath={"/characters"} />
+        <PaginationComp
+          currentPage={currentPage}
+          info={info}
+          routePath={"/characters?page="}
+        />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-8 mx-auto max-w-screen-xl">
         {data.map((item) => (
@@ -35,7 +39,11 @@ const CharactersPage = async ({ searchParams }) => {
         ))}
       </div>
       <div className="my-10 flex items-center justify-center">
-        <PaginationComp currentPage={currentPage} info={info} />
+        <PaginationComp
+          currentPage={currentPage}
+          info={info}
+          routePath={"/characters?page="}
+        />
       </div>
     </div>
   );

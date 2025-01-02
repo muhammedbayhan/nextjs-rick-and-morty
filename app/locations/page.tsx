@@ -1,7 +1,7 @@
 import React from "react";
 import v1 from "../api/v1";
-import SearchComp from "@/components/characters/search-comp";
-import PaginationComp from "@/components/characters/pagination-comp";
+import SearchComp from "@/components/search-comp";
+import PaginationComp from "@/components/pagination-comp";
 import LocationCard from "@/components/locations/location-card";
 const page = async ({ searchParams }) => {
   const { page, name } = searchParams;
@@ -25,8 +25,12 @@ const page = async ({ searchParams }) => {
   return (
     <div>
       <div className="my-10 flex flex-col items-center justify-center">
-        <SearchComp />
-        <PaginationComp currentPage={currentPage} info={info} />
+        <SearchComp routePath={"/locations"} />
+        <PaginationComp
+          currentPage={currentPage}
+          info={info}
+          routePath={"/locations?page="}
+        />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-8 mx-auto max-w-screen-xl">
         {data.map((item) => (
@@ -34,7 +38,11 @@ const page = async ({ searchParams }) => {
         ))}
       </div>
       <div className="my-10 flex items-center justify-center">
-        <PaginationComp currentPage={currentPage} info={info} />
+        <PaginationComp
+          currentPage={currentPage}
+          info={info}
+          routePath={"/locations?page="}
+        />
       </div>
     </div>
   );
