@@ -1,9 +1,12 @@
 import UserCard from "@/components/characters/user-card";
 import v1 from "../api/v1";
 import PaginationComp from "@/components/characters/pagination-comp";
+import SearchComp from "@/components/characters/search-comp";
 
 const CharactersPage = async ({ searchParams }) => {
   const { page } = await searchParams;
+  const { name } = await searchParams;
+
   const currentPage = page ? parseInt(page) : 1;
 
   let data = [];
@@ -23,7 +26,8 @@ const CharactersPage = async ({ searchParams }) => {
 
   return (
     <div>
-      <div className="my-10 flex items-center justify-center">
+      <div className="my-10 flex flex-col items-center justify-center">
+        <SearchComp />
         <PaginationComp currentPage={currentPage} info={info} />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-8 mx-auto max-w-screen-xl">
