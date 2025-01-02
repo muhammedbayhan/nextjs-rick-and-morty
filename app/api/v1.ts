@@ -2,11 +2,11 @@ import ApiClient from "./apiClient";
 
 const v1 = {
   getAllCharacters: async (page: number) => {
-    return await ApiClient.get("character", { page: page });
+    return await ApiClient.get("character", { page: page }, false);
   },
 
   getCharacterById: async (id: number) => {
-    return await ApiClient.get(`character/${id}`);
+    return await ApiClient.get(`character/${id}`, {}, false);
   },
 
   getAllEpisodes: async (page: number) => {
@@ -24,7 +24,6 @@ const v1 = {
   getLocationById: async (id: number) => {
     return await ApiClient.get(`location/${id}`);
   },
-
 };
 
 export default v1;

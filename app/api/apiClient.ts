@@ -1,4 +1,3 @@
-
 import { QueryParams } from "../../types/api-client";
 export default class ApiClient {
   static baseURL: string = "https://rickandmortyapi.com/api/";
@@ -23,9 +22,12 @@ export default class ApiClient {
     return url;
   }
 
-  static async get<T>(endpoint: string, queryParams: QueryParams = {}): Promise<T | { error: string }> {
+  static async get<T>(
+    endpoint: string,
+    queryParams: QueryParams = {},
+    returnJson = true
+  ): Promise<T | { error: string }> {
     const url = ApiClient.buildUrl(endpoint, queryParams);
-
 
     try {
       const response = await fetch(url);
@@ -34,16 +36,13 @@ export default class ApiClient {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
+      if (!returnJson) {
+        return response;
+      }
       const json = await response.json();
-
-      console.log(json);
-
       return json;
     } catch (error: any) {
-      console.error("GET request error:", error.message);
       return { error: error.message || "Unknown error occurred" };
     }
   }
-
-
 }

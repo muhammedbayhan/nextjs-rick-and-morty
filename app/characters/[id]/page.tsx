@@ -1,52 +1,77 @@
-import React from "react";
 import v1 from "../../api/v1";
+import { Card, Avatar, Tag } from "antd";
 
-const page = async () => {
-  let data = [];
-  let info = {};
+const CharacterDetail = async ({ params }) => {
+  const { id } = await params;
+  let data = {};
   try {
-    const response = await v1.getCharacterById(1);
-    data = response.results;
-    info = response.info;
+    const response = await v1.getCharacterById(id);
+    if (response.status === 200) {
+      const json = await response.json();
+      data = json;
+      console.log(data);
+    } else {
+      console.log("Veri çekme hatası:", response);
+    }
   } catch (error) {
-    console.error("Veri çekme hatası:", error);
+    console.log("Veri çekme hatası:", error);
   }
   return (
     <div>
-      {data.map((item) => (
-        <div className="border-2" key={item.id}>
-          <div>id{item.id}</div>
-          <div> name{item.name}</div>
-          <div>status{item.status}</div>
-          <div>sepcies{item.species}</div>
-          <div>type{item.type}</div>
-          <div>gender{item.gender}</div>
-          <div>image{item.image}</div>
+      <Card hoverable className="text-center">
+        <Avatar src={data.image} size={64} className="mx-auto mb-4" />
 
-          <div>
-            <div className="text-red-600 text-2xl">origin</div>
-            <div>{item.origin.name}</div>
-            <div>{item.origin.url}</div>
-          </div>
-          <div>
-            <div className="text-red-600 text-2xl">location</div>
-            <div>{item.location.name}</div>
-            <div>{item.location.url}</div>
-          </div>
-          <div>
-            <div className="text-red-600 text-2xl">episode</div>
-            <div>
-              {item.episode.map((episode) => (
-                <div key={episode}>{episode}</div>
-              ))}
-            </div>
-          </div>
-          <div>{item.url}</div>
-          <div>{item.created}</div>
+        <div className="text-2xl font-semibold text-center antialiased line-clamp-1">
+          {data.name}
         </div>
-      ))}
+
+        <div className="mb-2">
+          <Tag color={data.status === "Alive" ? "green" : "red"}>
+            {data.status}
+          </Tag>
+        </div>
+
+        <div>
+          <strong>Species: </strong>
+          {data.species}
+        </div>
+        <div>
+          <strong>Gender: </strong>
+          {data.gender}
+        </div>
+        <div>
+          <strong>Origin: </strong>
+          <a href={data.origin.url} target="_blank" rel="noopener noreferrer">
+            {data.origin.name}
+          </a>
+        </div>
+        <div>
+          <strong>Location: </strong>
+          <a href={data.location.url} target="_blank" rel="noopener noreferrer">
+            {data.location.name}
+          </a>
+        </div>
+
+        <div className="mt-4">
+          <strong>Episodes:</strong>
+          <ul>
+            {data.episode.map((episodeUrl, index) => (
+              <li key={index}>
+                <a href={episodeUrl} target="_blank" rel="noopener noreferrer">
+                  Episode {index + 1}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="mt-2 text-sm text-gray-500">
+          <strong>Created on: </strong>
+          {new Date(data.created).toLocaleDateString()}
+        </div>
+      </Card>
     </div>
   );
 };
 
-export default page;
+export default CharacterDetail;
