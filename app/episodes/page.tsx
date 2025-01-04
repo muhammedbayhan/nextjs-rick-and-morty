@@ -25,7 +25,7 @@ const page = async ({ searchParams }) => {
   return (
     <div>
       <div className="my-10 flex flex-col items-center justify-center">
-        <SearchComp routePath={"/locations"} />
+        <SearchComp routePath={"/episodes"} />
         <PaginationComp
           currentPage={currentPage}
           info={info}
