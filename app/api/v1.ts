@@ -21,12 +21,14 @@ const v1 = {
     return await ApiClient.get(`location/${id}`, {}, false);
   },
 
-  getAllEpisodes: async (page: number) => {
-    return await ApiClient.get("episode", { page: page });
+  getAllEpisodes: async (page: number, name: string = "") => {
+    const params = { page: page };
+    if (name) params.name = name;
+    return await ApiClient.get("episode", params, false);
   },
 
   getEpisodeById: async (id: number) => {
-    return await ApiClient.get(`episode/${id}`);
+    return await ApiClient.get(`episode/${id}`, {}, false);
   },
 };
 
