@@ -1,15 +1,28 @@
+"use client";
 import Link from "next/link";
-import React from "react";
-import DarkModeSwitcher from "./dark-mode-switcher";
+import { usePathname } from "next/navigation";
 
 const Header = () => {
+  const pathname = usePathname();
+
+  const getLinkClass = (linkPath: string) => {
+    return pathname === linkPath ? "text-green-500 font-bold" : "text-gray-700";
+  };
+
   return (
-    <div className="space-x-2  dark:bg-gray-800">
-      <Link href="/">Home</Link>
-      <Link href="/characters">Characters</Link>
-      <Link href="/locations">Locations</Link>
-      <Link href="/episodes">Episodes</Link>
-      <DarkModeSwitcher />
+    <div className="space-x-2 p-5 text-base ">
+      <Link href="/" className={getLinkClass("/")}>
+        Home
+      </Link>
+      <Link href="/characters" className={getLinkClass("/characters")}>
+        Characters
+      </Link>
+      <Link href="/locations" className={getLinkClass("/locations")}>
+        Locations
+      </Link>
+      <Link href="/episodes" className={getLinkClass("/episodes")}>
+        Episodes
+      </Link>
     </div>
   );
 };
