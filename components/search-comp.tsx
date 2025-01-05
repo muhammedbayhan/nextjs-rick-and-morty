@@ -20,6 +20,7 @@ const SearchComp = ({ routePath }) => {
       placeholder="input search text"
       allowClear
       onChange={onChange}
+      className="!w-full"
       style={{ width: 200 }}
     />
   );

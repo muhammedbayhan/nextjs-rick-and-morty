@@ -1,10 +1,10 @@
 import React from "react";
 import v1 from "../api/v1";
-import SearchComp from "../../components/search-comp";
-import PaginationComp from "../../components/pagination-comp";
+import SearchComp from "@/components/search-comp";
+import PaginationComp from "@/components/pagination-comp";
 import EpisodeCard from "@/components/episodes/episode-card";
 
-const page = async ({ searchParams }) => {
+const EpisodesPage = async ({ searchParams }) => {
   const { page, name } = searchParams;
   const currentPage = page ? parseInt(page) : 1;
 
@@ -17,35 +17,40 @@ const page = async ({ searchParams }) => {
       data = json.results;
       info = json.info;
     } else {
-      console.log("Veri çekme hatası:", response);
+      console.log("Data fetch error:", response);
     }
   } catch (error) {
-    console.log("Veri çekme hatası:", error);
+    console.log("Data fetch error:", error);
   }
+
   return (
-    <div>
+    <div className="min-h-screen  text-white">
       <div className="my-10 flex flex-col items-center justify-center">
-        <SearchComp routePath={"/episodes"} />
-        <PaginationComp
-          currentPage={currentPage}
-          info={info}
-          routePath={"/locations?page="}
-        />
+        <h1 className="text-4xl font-bold text-center mb-6">
+          Explore Episodes
+        </h1>
+        <div className="w-4/5">
+          <SearchComp routePath={"/episodes"} />
+        </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-8 mx-auto max-w-screen-xl">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 px-8 mx-auto max-w-screen-xl">
         {data.map((item) => (
-          <EpisodeCard key={item.id} item={item} />
+          <EpisodeCard
+            key={item.id}
+            item={item}
+            className="transform transition duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/30 rounded-lg overflow-hidden bg-gray-700"
+          />
         ))}
       </div>
       <div className="my-10 flex items-center justify-center">
         <PaginationComp
           currentPage={currentPage}
           info={info}
-          routePath={"/locations?page="}
+          routePath={"/episodes?page="}
         />
       </div>
     </div>
   );
 };
 
-export default page;
+export default EpisodesPage;

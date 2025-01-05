@@ -3,7 +3,8 @@ import v1 from "../api/v1";
 import SearchComp from "@/components/search-comp";
 import PaginationComp from "@/components/pagination-comp";
 import LocationCard from "@/components/locations/location-card";
-const page = async ({ searchParams }) => {
+
+const LocationsPage = async ({ searchParams }) => {
   const { page, name } = searchParams;
   const currentPage = page ? parseInt(page) : 1;
 
@@ -23,18 +24,22 @@ const page = async ({ searchParams }) => {
   }
 
   return (
-    <div>
+    <div className="min-h-screen text-white">
       <div className="my-10 flex flex-col items-center justify-center">
-        <SearchComp routePath={"/locations"} />
-        <PaginationComp
-          currentPage={currentPage}
-          info={info}
-          routePath={"/locations?page="}
-        />
+        <h1 className="text-4xl font-bold text-center mb-6">
+          Explore Locations
+        </h1>
+        <div className="w-4/5">
+          <SearchComp routePath={"/locations"} />
+        </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-8 mx-auto max-w-screen-xl">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 px-8 mx-auto max-w-screen-xl">
         {data.map((item) => (
-          <LocationCard key={item.id} item={item} />
+          <LocationCard
+            key={item.id}
+            item={item}
+            className="transform transition duration-300 hover:scale-105 hover:shadow-lg hover:shadow-green-500/30 rounded-lg overflow-hidden bg-gray-700"
+          />
         ))}
       </div>
       <div className="my-10 flex items-center justify-center">
@@ -48,4 +53,4 @@ const page = async ({ searchParams }) => {
   );
 };
 
-export default page;
+export default LocationsPage;

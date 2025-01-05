@@ -24,20 +24,22 @@ const CharactersPage = async ({ searchParams }) => {
   }
 
   return (
-    <div>
+    <div className="min-h-screen text-white">
       <div className="my-10 flex flex-col items-center justify-center">
-        <SearchComp routePath={"/characters"} />
-        <PaginationComp
-          currentPage={currentPage}
-          info={info}
-          routePath={"/characters?page="}
-        />
+        <h1 className="text-4xl font-bold text-center mb-6">
+          Explore Characters
+        </h1>
+        <div className="w-4/5">
+          <SearchComp routePath={"/locations"} />
+        </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-8 mx-auto max-w-screen-xl">
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-6 sm:px-8 mx-auto max-w-screen-xl">
         {data.map((item) => (
           <UserCard key={item.id} item={item} />
         ))}
       </div>
+
       <div className="my-10 flex items-center justify-center">
         <PaginationComp
           currentPage={currentPage}
