@@ -30,7 +30,7 @@ const CharactersPage = async ({ searchParams }) => {
           Explore Characters
         </h1>
         <div className="w-4/5">
-          <SearchComp routePath={"/locations"} />
+          <SearchComp routePath={"/characters"} />
         </div>
       </div>
 

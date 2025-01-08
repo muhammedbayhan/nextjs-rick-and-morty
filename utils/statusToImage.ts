@@ -10,6 +10,8 @@ export function statusToImage(status: string): string {
       return "male.png";
     case "Genderless":
       return "genderless.png";
+    case "unknown":
+      return "unknown.png";
     default:
       return "null.png";
   }
