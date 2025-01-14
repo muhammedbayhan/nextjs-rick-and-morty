@@ -5,12 +5,27 @@ import { Card, Avatar, Tag } from "antd";
 const CharacterDetail = async ({ params }) => {
   const { id } = await params;
   let data = {};
+  let episodes = [];
   try {
     const response = await v1.getCharacterById(id);
     if (response.status === 200) {
       const json = await response.json();
       data = json;
-      console.log(data);
+
+      // Episode ID'lerini çıkarıyoruz
+      const episodeIds = data.episode.map((episodeUrl) => {
+        return episodeUrl.split("/").pop();
+      });
+
+      // Çoklu bölüm verisi alıyoruz
+      if (episodeIds.length > 0) {
+        const episodesResponse = await v1.getEpisodeById(episodeIds.join(","));
+        if (episodesResponse.ok) {
+          episodes = await episodesResponse.json();
+        }
+      }
+
+      console.log(data, episodes);
     } else {
       console.log("Veri çekme hatası:", response);
     }
@@ -57,11 +72,11 @@ const CharacterDetail = async ({ params }) => {
       <div className="flex-1">
         <Card hoverable className="p-4 shadow-lg h-full">
           <div className="text-2xl font-bold mb-4">Episodes</div>
-          <ul className="grid grid-cols-3 h-full">
-            {data.episode.map((episodeUrl, index) => (
+          <ul className="grid grid-cols-3 gap-2">
+            {episodes.map((episode, index) => (
               <li key={index}>
-                <Link href={`/episodes/${episodeUrl.split("/").pop()}`}>
-                  Episode {episodeUrl.split("/").pop()}
+                <Link href={`/episodes/${episode.id}`}>
+                  {episode.episode} - {episode.name}
                 </Link>
               </li>
             ))}
