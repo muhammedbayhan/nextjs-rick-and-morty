@@ -1,11 +1,12 @@
 import Link from "next/link";
 import v1 from "../../api/v1";
-import { Card, Avatar, Tag } from "antd";
+import { Card, Avatar, Tag, Divider } from "antd";
 
 const CharacterDetail = async ({ params }) => {
   const { id } = await params;
   let data = {};
   let episodes = [];
+
   try {
     const response = await v1.getCharacterById(id);
     if (response.status === 200) {
@@ -36,48 +37,85 @@ const CharacterDetail = async ({ params }) => {
   }
 
   return (
-    <div className="flex flex-col md:flex-row gap-4 p-4">
-      <div className="flex-1">
-        <Card hoverable className="text-center p-4 shadow-lg h-full">
-          <Avatar src={data.image} size={128} className="mx-auto mb-4" />
-          <div className="text-3xl font-bold mb-2">{data.name}</div>
-          <div className="mb-4">
-            <Tag color={data.status === "Alive" ? "green" : "red"}>
+    <div className="flex flex-col md:flex-row gap-8 p-8 min-h-screen ">
+      {/* Character Info */}
+      <div className="flex-2">
+        <Card
+          bordered={false}
+          hoverable
+          className="max-w-md w-full bg-gradient-to-tr from-slate-800 via-slate-600 to-green-700 text-white shadow-xl rounded-xl transition-all duration-300 transform hover:scale-105"
+        >
+          <div className="mb-6">
+            <Tag
+              bordered={false}
+              color={data.status === "Alive" ? "green" : "red"}
+              className="text-lg font-medium"
+            >
               {data.status}
             </Tag>
           </div>
-          <div className="text-lg">
-            <strong>Species: </strong>
-            {data.species}
+          <Avatar
+            className="flex items-center justify-center mb-4 mx-auto"
+            src={data.image}
+            size={128}
+          />
+          <div className="text-center mb-6">
+            <div className="text-4xl font-bold mb-2">{data.name}</div>
+            <div className="text-lg text-gray-300 mb-4">
+              {data.species} - {data.gender}
+            </div>
           </div>
-          <div className="text-lg">
-            <strong>Gender: </strong>
-            {data.gender}
-          </div>
-          <div className="text-lg">
-            <strong>Origin: </strong>
-            <Link href={`/locations/${data.origin.url.split("/").pop()}`}>
-              {data.origin.name}
-            </Link>
-          </div>
-          <div className="text-lg">
-            <strong>Location: </strong>
-            <Link href={`/locations/${data.location.url.split("/").pop()}`}>
-              {data.location.name}
-            </Link>
+          <div className="space-y-4">
+            <div className="flex justify-between">
+              <span className="font-semibold text-sm">Origin:</span>
+              <Link
+                href={`/locations/${data.origin.url.split("/").pop()}`}
+                className="text-blue-300 hover:underline"
+              >
+                {data.origin.name}
+              </Link>
+            </div>
+            <div className="flex justify-between">
+              <span className="font-semibold text-sm">Location:</span>
+              <Link
+                href={`/locations/${data.location.url.split("/").pop()}`}
+                className="text-blue-300 hover:underline"
+              >
+                {data.location.name}
+              </Link>
+            </div>
           </div>
         </Card>
       </div>
 
-      <div className="flex-1">
-        <Card hoverable className="p-4 shadow-lg h-full">
-          <div className="text-2xl font-bold mb-4">Episodes</div>
-          <ul className="grid grid-cols-3 gap-2">
+      {/* Episodes List */}
+      <div className="flex-1 h-full text-white">
+        <Card
+          bordered={false}
+          className="shadow-xl rounded-lg p-6 bg-slate-700 hover:shadow-2xl transition-all duration-300"
+        >
+          <div className="text-3xl font-bold text-white mb-6">Episodes</div>
+          <Divider className="border-gray-600 mb-6" />
+          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {episodes.map((episode, index) => (
-              <li key={index}>
-                <Link href={`/episodes/${episode.id}`}>
-                  {episode.episode} - {episode.name}
-                </Link>
+              <li
+                key={index}
+                className="group bg-slate-600 rounded-lg p-4 flex justify-between space-x-3 hover:bg-slate-500 transition-all duration-200"
+              >
+                <div className="flex flex-col  text-center w-full space-y-2">
+                  <Tag
+                    bordered={false}
+                    className="bg-slate-500 text-center text-sm font-medium text-white group-hover:bg-green-400 transition-all"
+                  >
+                    {episode.episode}
+                  </Tag>
+                  <Link
+                    href={`/episodes/${episode.id}`}
+                    className="text-lg font-semibold text-white group-hover:text-green-400 group-hover:underline transition-all duration-300"
+                  >
+                    {episode.name}
+                  </Link>
+                </div>
               </li>
             ))}
           </ul>

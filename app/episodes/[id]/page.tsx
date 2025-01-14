@@ -8,17 +8,15 @@ const EpisodeDetail = async ({ params }) => {
   let characters = [];
 
   try {
-    const response = await v1.getEpisodeById(id); // Fetch episode details
+    const response = await v1.getEpisodeById(id);
     if (response.status === 200) {
       const json = await response.json();
       data = json;
 
-      // Extract character IDs from the episode
       const characterIds = data.characters.map((characterUrl) =>
         characterUrl.split("/").pop()
       );
 
-      // Fetch multiple characters at once if any character IDs exist
       if (characterIds.length > 0) {
         const charactersResponse = await v1.getCharactersByIds(
           characterIds.join(",")
@@ -27,7 +25,7 @@ const EpisodeDetail = async ({ params }) => {
           characters = await charactersResponse.json();
         }
       }
-      console.log(data, characters); // Debugging data and characters
+      console.log(data, characters);
     } else {
       console.log("Data fetch error:", response);
     }
