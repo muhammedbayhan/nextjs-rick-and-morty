@@ -1,16 +1,36 @@
 import Link from "next/link";
 import v1 from "../../api/v1";
-import { Card, Avatar, Tag } from "antd";
+import { Card, Tag } from "antd";
 
 const LocationDetail = async ({ params }) => {
   const { id } = await params;
   let data = {};
+  let residents = [];
+
   try {
     const response = await v1.getLocationById(id);
     if (response.status === 200) {
       const json = await response.json();
       data = json;
-      console.log(data);
+
+      const residentIds = data.residents.map((residentUrl) =>
+        residentUrl.split("/").pop()
+      );
+
+      if (residentIds.length > 0) {
+        const residentsResponse = await v1.getCharactersByIds(
+          residentIds.join(",")
+        );
+        if (residentsResponse.ok) {
+          const residentsData = await residentsResponse.json();
+
+          residents = Array.isArray(residentsData)
+            ? residentsData
+            : [residentsData];
+        }
+      }
+
+      console.log(data, residents);
     } else {
       console.log("Veri çekme hatası:", response);
     }
@@ -37,11 +57,11 @@ const LocationDetail = async ({ params }) => {
         <div className="mb-2">
           <strong>Residents: </strong>
           <ul>
-            {data.residents && data.residents.length > 0 ? (
-              data.residents.map((residentUrl, index) => (
+            {residents.length > 0 ? (
+              residents.map((resident, index) => (
                 <li key={index}>
-                  <Link href={`/characters/${residentUrl.split("/").pop()}`}>
-                    Resident {residentUrl.split("/").pop()}
+                  <Link href={`/characters/${resident.id}`}>
+                    {resident.name}
                   </Link>
                 </li>
               ))

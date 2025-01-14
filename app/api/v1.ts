@@ -34,6 +34,10 @@ const v1 = {
   getEpisodesByIds: async (ids: string) => {
     return await ApiClient.get(`episode/${ids}`, {}, false);
   },
+
+  getCharactersByIds: async (ids: string) => {
+    return await ApiClient.get(`character/${ids}`, {}, false);
+  },
 };
 
 export default v1;

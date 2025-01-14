@@ -12,16 +12,18 @@ const CharacterDetail = async ({ params }) => {
       const json = await response.json();
       data = json;
 
-      // Episode ID'lerini çıkarıyoruz
       const episodeIds = data.episode.map((episodeUrl) => {
         return episodeUrl.split("/").pop();
       });
 
-      // Çoklu bölüm verisi alıyoruz
       if (episodeIds.length > 0) {
         const episodesResponse = await v1.getEpisodeById(episodeIds.join(","));
         if (episodesResponse.ok) {
-          episodes = await episodesResponse.json();
+          const episodesData = await episodesResponse.json();
+
+          episodes = Array.isArray(episodesData)
+            ? episodesData
+            : [episodesData];
         }
       }
 
@@ -35,7 +37,6 @@ const CharacterDetail = async ({ params }) => {
 
   return (
     <div className="flex flex-col md:flex-row gap-4 p-4">
-      {/* Sol taraf: Kullanıcı Bilgileri */}
       <div className="flex-1">
         <Card hoverable className="text-center p-4 shadow-lg h-full">
           <Avatar src={data.image} size={128} className="mx-auto mb-4" />
@@ -68,7 +69,6 @@ const CharacterDetail = async ({ params }) => {
         </Card>
       </div>
 
-      {/* Sağ taraf: Bölüm Listesi */}
       <div className="flex-1">
         <Card hoverable className="p-4 shadow-lg h-full">
           <div className="text-2xl font-bold mb-4">Episodes</div>

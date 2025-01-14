@@ -5,17 +5,34 @@ import { Card, Avatar, Tag } from "antd";
 const EpisodeDetail = async ({ params }) => {
   const { id } = await params;
   let data = {};
+  let characters = [];
+
   try {
-    const response = await v1.getEpisodeById(id); // Değiştirilen fonksiyon
+    const response = await v1.getEpisodeById(id); // Fetch episode details
     if (response.status === 200) {
       const json = await response.json();
       data = json;
-      console.log(data);
+
+      // Extract character IDs from the episode
+      const characterIds = data.characters.map((characterUrl) =>
+        characterUrl.split("/").pop()
+      );
+
+      // Fetch multiple characters at once if any character IDs exist
+      if (characterIds.length > 0) {
+        const charactersResponse = await v1.getCharactersByIds(
+          characterIds.join(",")
+        );
+        if (charactersResponse.ok) {
+          characters = await charactersResponse.json();
+        }
+      }
+      console.log(data, characters); // Debugging data and characters
     } else {
-      console.log("Veri çekme hatası:", response);
+      console.log("Data fetch error:", response);
     }
   } catch (error) {
-    console.log("Veri çekme hatası:", error);
+    console.log("Data fetch error:", error);
   }
 
   return (
@@ -38,11 +55,11 @@ const EpisodeDetail = async ({ params }) => {
         <div className="mb-2">
           <strong>Characters: </strong>
           <ul>
-            {data.characters && data.characters.length > 0 ? (
-              data.characters.map((characterUrl, index) => (
+            {characters.length > 0 ? (
+              characters.map((character, index) => (
                 <li key={index}>
-                  <Link href={`/characters/${characterUrl.split("/").pop()}`}>
-                    Character {characterUrl.split("/").pop()}
+                  <Link href={`/characters/${character.id}`}>
+                    {character.name}
                   </Link>
                 </li>
               ))
