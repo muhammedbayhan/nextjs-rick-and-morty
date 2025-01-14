@@ -4,6 +4,32 @@ import SearchComp from "@/components/search-comp";
 import PaginationComp from "@/components/pagination-comp";
 import LocationCard from "@/components/locations/location-card";
 
+export async function generateMetadata({ searchParams }) {
+  const { page, name } = searchParams;
+  const currentPage = page ? parseInt(page) : 1;
+  let data = [];
+  let locationNames = [];
+
+  try {
+    const response = await v1.getAllLocations(currentPage, name || "");
+    if (response.status === 200) {
+      const json = await response.json();
+      data = json.results;
+      locationNames = data.map((location) => location.name);
+    } else {
+      console.log("Veri çekme hatası:", response);
+    }
+  } catch (error) {
+    console.log("Veri çekme hatası:", error);
+  }
+
+  return {
+    title: `Explore Locations - ${locationNames[0]} - ${locationNames[1]} ...`,
+    description: `${locationNames.join(", ")}`,
+    keywords: `${locationNames.join(", ")}`,
+  };
+}
+
 const LocationsPage = async ({ searchParams }) => {
   const { page, name } = searchParams;
   const currentPage = page ? parseInt(page) : 1;

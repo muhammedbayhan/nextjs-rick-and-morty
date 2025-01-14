@@ -3,6 +3,31 @@ import v1 from "../api/v1";
 import SearchComp from "@/components/search-comp";
 import PaginationComp from "@/components/pagination-comp";
 import EpisodeCard from "@/components/episodes/episode-card";
+export async function generateMetadata({ searchParams }) {
+  const { page, name } = searchParams;
+  const currentPage = page ? parseInt(page) : 1;
+  let data = [];
+  let episodeNames = [];
+
+  try {
+    const response = await v1.getAllEpisodes(currentPage, name || "");
+    if (response.status === 200) {
+      const json = await response.json();
+      data = json.results;
+      episodeNames = data.map((episode) => episode.name);
+    } else {
+      console.log("Veri çekme hatası:", response);
+    }
+  } catch (error) {
+    console.log("Veri çekme hatası:", error);
+  }
+
+  return {
+    title: `Explore Episodes - ${episodeNames[0]} - ${episodeNames[1]} ...`,
+    description: `${episodeNames.join(", ")}`,
+    keywords: `${episodeNames.join(", ")}`,
+  };
+}
 
 const EpisodesPage = async ({ searchParams }) => {
   const { page, name } = searchParams;

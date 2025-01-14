@@ -7,6 +7,7 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: "Rick and Morty Universe",
   description: "Explore the multiverse with Rick and Morty.",
+  keywords: ["Rick and Morty", "Universe", "Multiverse"],
 };
 
 export default function RootLayout({

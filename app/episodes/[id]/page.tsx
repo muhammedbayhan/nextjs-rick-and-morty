@@ -2,6 +2,47 @@ import Link from "next/link";
 import v1 from "../../api/v1";
 import { Card, Avatar, Tag, Divider } from "antd";
 
+export async function generateMetadata({ params }) {
+  const { id } = params;
+
+  let data = {};
+  let characters = [];
+
+  try {
+    const response = await v1.getEpisodeById(id);
+    if (response.status === 200) {
+      const json = await response.json();
+      data = json;
+      const charactersIds = data.characters.map((charactersUrl) =>
+        charactersUrl.split("/").pop()
+      );
+
+      if (charactersIds.length > 0) {
+        const charactersResponse = await v1.getCharacterById(
+          charactersIds.join(",")
+        );
+        if (charactersResponse.ok) {
+          const charactersData = await charactersResponse.json();
+
+          characters = Array.isArray(charactersData)
+            ? charactersData
+            : [charactersData];
+        }
+      }
+    } else {
+      console.log("Data fetch error:", response);
+    }
+  } catch (error) {
+    console.log("Data fetch error:", error);
+  }
+
+  return {
+    title: data.name,
+    description: characters.map((character) => character.name).join(", "),
+    keywords: characters.map((character) => character.name).join(", "),
+  };
+}
+
 const EpisodeDetail = async ({ params }) => {
   const { id } = await params;
   let data = {};

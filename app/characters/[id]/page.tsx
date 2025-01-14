@@ -2,6 +2,48 @@ import Link from "next/link";
 import v1 from "../../api/v1";
 import { Card, Avatar, Tag, Divider } from "antd";
 
+export async function generateMetadata({ params }) {
+  const { id } = await params;
+
+  let data = {};
+  let episodes = [];
+
+  try {
+    const response = await v1.getCharacterById(id);
+    if (response.status === 200) {
+      const json = await response.json();
+      data = json;
+
+      const episodeIds = data.episode.map((episodeUrl) => {
+        return episodeUrl.split("/").pop();
+      });
+
+      if (episodeIds.length > 0) {
+        const episodesResponse = await v1.getEpisodeById(episodeIds.join(","));
+        if (episodesResponse.ok) {
+          const episodesData = await episodesResponse.json();
+
+          episodes = Array.isArray(episodesData)
+            ? episodesData
+            : [episodesData];
+        }
+      }
+
+      console.log(data, episodes);
+    } else {
+      console.log("Veri çekme hatası:", response);
+    }
+  } catch (error) {
+    console.log("Veri çekme hatası:", error);
+  }
+
+  return {
+    title: data.name,
+    description: episodes.map((episode) => episode.name).join(", "),
+    keywords: episodes.map((episode) => episode.name).join(", "),
+  };
+}
+
 const CharacterDetail = async ({ params }) => {
   const { id } = await params;
   let data = {};

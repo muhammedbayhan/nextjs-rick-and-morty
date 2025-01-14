@@ -27,13 +27,13 @@ const DarkModeSwitcher = () => {
   return (
     <Switch
       style={{
-        backgroundColor: darkMode ? "#000" : "#E4E7EB",
-        color: darkMode ? "#000" : "#000",
+        backgroundColor: darkMode ? "#00ffe8" : "#ecff00",
+        color: darkMode ? "#000000" : "#000000",
       }}
       checked={darkMode}
       onChange={toggleDarkMode}
-      checkedChildren="Dark"
-      unCheckedChildren="Light"
+      checkedChildren="Rick Mode"
+      unCheckedChildren="Morty Mode"
     />
   );
 };

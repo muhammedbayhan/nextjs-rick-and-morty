@@ -3,6 +3,32 @@ import v1 from "../api/v1";
 import PaginationComp from "@/components/pagination-comp";
 import SearchComp from "@/components/search-comp";
 
+export async function generateMetadata({ searchParams }) {
+  const { page, name } = searchParams;
+  const currentPage = page ? parseInt(page) : 1;
+  let data = [];
+  let characterNames = [];
+
+  try {
+    const response = await v1.getAllCharacters(currentPage, name || "");
+    if (response.status === 200) {
+      const json = await response.json();
+      data = json.results;
+      characterNames = data.map((character) => character.name);
+    } else {
+      console.log("Veri çekme hatası:", response);
+    }
+  } catch (error) {
+    console.log("Veri çekme hatası:", error);
+  }
+
+  return {
+    title: `Explore Characters - ${characterNames[0]} - ${characterNames[1]} ...`,
+    description: `${characterNames.join(", ")}`,
+    keywords: `${characterNames.join(", ")}`,
+  };
+}
+
 const CharactersPage = async ({ searchParams }) => {
   const { page, name } = searchParams;
 
