@@ -1,3 +1,4 @@
+import Link from "next/link";
 import v1 from "../../api/v1";
 import { Card, Avatar, Tag } from "antd";
 
@@ -40,13 +41,9 @@ const EpisodeDetail = async ({ params }) => {
             {data.characters && data.characters.length > 0 ? (
               data.characters.map((characterUrl, index) => (
                 <li key={index}>
-                  <a
-                    href={characterUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Character {index + 1}
-                  </a>
+                  <Link href={`/characters/${characterUrl.split("/").pop()}`}>
+                    Character {characterUrl.split("/").pop()}
+                  </Link>
                 </li>
               ))
             ) : (
