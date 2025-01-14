@@ -13,6 +13,7 @@ const PaginationComp = ({ currentPage, info, routePath }) => {
   return (
     <div>
       <Pagination
+        hideOnSinglePage
         current={currentPage}
         total={info.count}
         pageSize={20}
