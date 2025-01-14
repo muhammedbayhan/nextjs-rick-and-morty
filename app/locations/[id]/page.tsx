@@ -1,3 +1,4 @@
+import Link from "next/link";
 import v1 from "../../api/v1";
 import { Card, Avatar, Tag } from "antd";
 
@@ -39,24 +40,15 @@ const LocationDetail = async ({ params }) => {
             {data.residents && data.residents.length > 0 ? (
               data.residents.map((residentUrl, index) => (
                 <li key={index}>
-                  <a
-                    href={residentUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Resident {index + 1}
-                  </a>
+                  <Link href={`/characters/${residentUrl.split("/").pop()}`}>
+                    Resident {residentUrl.split("/").pop()}
+                  </Link>
                 </li>
               ))
             ) : (
               <p>No residents available.</p>
             )}
           </ul>
-        </div>
-
-        <div className="mt-2 text-sm text-gray-500">
-          <strong>Created on: </strong>
-          {new Date(data.created).toLocaleDateString()}
         </div>
       </Card>
     </div>
