@@ -33,7 +33,18 @@ const Footer = () => {
         </div>
 
         <div className="text-center sm:text-left text-sm mt-4 sm:mt-0">
-          <p>© {date} All rights reserved.</p>
+          <p>© {date} Muhammed Bayhan</p>
+          <p>
+            Data from{" "}
+            <a
+              href="https://rickandmortyapi.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-300 hover:underline"
+            >
+              Rick and Morty API
+            </a>
+          </p>
         </div>
       </div>
     </div>
