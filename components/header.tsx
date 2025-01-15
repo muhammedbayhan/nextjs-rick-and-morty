@@ -13,7 +13,7 @@ const Header = () => {
   };
 
   return (
-    <div className="flex justify-between items-center p-5 px-10 bg-gradient-to-r from-slate-800 via-slate-600 to-green-700 ">
+    <div className="flex justify-between items-center p-5 px-10 bg-gradient-to-r from-slate-800 via-slate-600 to-green-700  dark:from-green-700 dark:via-slate-600 dark:to-slate-800">
       <div className="text-lg  md:text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500">
         <Link href="/">Rick and Morty</Link>
       </div>
