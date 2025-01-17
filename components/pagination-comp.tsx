@@ -7,7 +7,7 @@ const PaginationComp = ({ currentPage, info, routePath }) => {
   const router = useRouter();
 
   const handlePaginationChange = (page) => {
-    router.push(`${routePath}${page}`);
+    router.push(`${routePath}${page}&name=${localStorage.getItem("search")}`);
   };
 
   return (

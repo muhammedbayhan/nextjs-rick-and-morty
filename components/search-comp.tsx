@@ -8,6 +8,8 @@ const SearchComp = ({ routePath }) => {
   const onChange = (e) => {
     const newInput = e.target.value;
 
+    // local storage add
+    localStorage.setItem("search", newInput);
     if (newInput === "") {
       router.push(`${routePath}`);
     } else {
@@ -17,6 +19,7 @@ const SearchComp = ({ routePath }) => {
 
   return (
     <Search
+      defaultValue={localStorage.getItem("search")}
       placeholder="input search text"
       allowClear
       onChange={onChange}
